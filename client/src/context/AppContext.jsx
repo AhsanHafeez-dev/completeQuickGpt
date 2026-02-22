@@ -31,7 +31,9 @@ export const AppContextProvider = ({ children }) => {
                 setUser(data.data);        
             }
             else {
-                toast.error(data.message);
+                // toast.error(data.message);
+                console.log("logged out");
+                
             }
         } catch (error) {
             toast.error(error.message)
