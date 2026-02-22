@@ -7,6 +7,8 @@ import axios from 'axios';
 import toast from "react-hot-toast";
 axios.defaults.baseURL = import.meta.env.VITE_SERVER_URL;
 export const AppContextProvider = ({ children }) => {
+    console.log(import.meta.env.VITE_SERVER_URL);
+    
     const navigate = useNavigate();
     const [user, setUser] = useState(null);
     const [chats, setChats] = useState([]);
@@ -17,12 +19,14 @@ export const AppContextProvider = ({ children }) => {
 
     const fetchUser = async () => {
         try {
-            const response = await axios.get('/api/users/data', { headers: { Authorization: token } });
-            if (response.success) {
-                setUser(response)        
+            const {data} = await axios.get('/api/user/data', { headers: { Authorization: token } });
+            if (data.success) {
+                console.log("setting",data.data);
+                
+                setUser(data.data);        
             }
             else {
-                toast.error(response.message);
+                toast.error(data.message);
             }
         } catch (error) {
             toast.error(error.message)

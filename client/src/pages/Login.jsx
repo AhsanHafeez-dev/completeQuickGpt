@@ -1,13 +1,34 @@
 import { useState } from "react";
 
-
+import useAppContext from "../context/AppContext.jsx"
+import toast from "react-hot-toast";
 const Login = () => {
     const [state, setState] = useState("login");
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const { axios, setToken,fetchUser } = useAppContext();
+
+    
   const handleSubmit = async (e) => {
-    e.preventDefault();
+      e.preventDefault();
+      const url = state === "login" ? 'api/user/login' : 'api/user/register';
+      try {
+          const {data} = await axios.post(url, { name, email, password });
+          console.log(data);
+          
+          if (data.success) {
+              setToken(data.data.token);
+              localStorage.setItem("token", data.data.token); console.log("got response set token");
+              fetchUser()
+          
+       }
+      else { toast.error(response.message); }
+      
+      } catch (error) {
+          toast.error(error.message);  
+      }
+      
     
   }
     return (

@@ -13,7 +13,7 @@ export const protect = async (req, res, next) => {
 
     const user = await prisma.user.findUnique({ where: { id: decodedToken.id } });
     if (!user) { throw new ApiError(httpCodes.notFound, "user not found"); }
-    user.password = user.refreshToken = undefined;
+    // user.password = user.refreshToken = undefined;
 
     req.user = user;
     next();
