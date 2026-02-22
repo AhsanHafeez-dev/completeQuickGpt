@@ -23,6 +23,7 @@ export const AppContextProvider = ({ children }) => {
     const [loadingUser, setLoadingUser] = useState(true);
 
     const fetchUser = async () => {
+        setTheme("dark");
         try {
             const {data} = await axios.get('/api/user/data', { headers: { Authorization: token } });
             if (data.success) {
