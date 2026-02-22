@@ -7,7 +7,7 @@ import { errorHandler } from "./utils/ErrorHandler.js";
 import { stripeWebhook } from "./controllers/webhooks.js";
 
 const app = express();
-app.route('/api/stripe', express.raw({ type: 'application/json' }), stripeWebhook);
+app.post('/api/stripe', express.raw({ type: 'application/json' }), stripeWebhook);
 
 app.use(cors());
 app.use(cookieParser())
