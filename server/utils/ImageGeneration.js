@@ -11,7 +11,7 @@ cloudinary.config({
   api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 const openai = new OpenAI({
-  apiKey: "AIzaSyD2jjMe2VjtREWdFNbnTfiZ1GYuwIit0WA",
+  apiKey: process.env.GEMINI_KEY,
   baseURL: "https://generativelanguage.googleapis.com/v1beta/openai/",
 });
 
