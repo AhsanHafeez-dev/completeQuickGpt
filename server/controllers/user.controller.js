@@ -9,7 +9,7 @@ import { comparePassword, encryptPassword, generateAccessAndRefreshToken, genera
 const registerUser = asyncHandler(async (req, res) => {
     let { email, userName, password } = req.body;
     
-    if (!(email.trim() && password.trim() && userName.trim())) { throw new ApiError(httpCodes.badRequest, "email password and userName is required for user creation"); }
+    if (!(email?.trim() && password?.trim() && userName?.trim())) { throw new ApiError(httpCodes.badRequest, "email password and userName is required for user creation"); }
 
     const userExists = await prisma.user.findFirst({ where: { email } });
 
@@ -29,7 +29,7 @@ const registerUser = asyncHandler(async (req, res) => {
 
 const loginUser = asyncHandler(async (req, res) => {
     const { email, password } = req.body;
-    if (!(email.trim() && password.trim())) { throw new ApiError(httpCodes.badRequest, "email password  is required for user login"); }
+    if (!(email?.trim() && password?.trim())) { throw new ApiError(httpCodes.badRequest, "email password  is required for user login"); }
     
     const userExists = await prisma.user.findFirst({ where: { email } });
     if (!userExists) { throw new ApiError(httpCodes.badRequest, "Invalid user credentials"); }

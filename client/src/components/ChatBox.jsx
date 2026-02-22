@@ -16,7 +16,8 @@ const Chatbox = () => {
     
   }
   useEffect
-    (() => { setMessages(selectedChat?.messages)},
+    (() => { setMessages(selectedChat?.messages); console.log("size",!(messages?.length ));
+    },
       [selectedChat])
 
   useEffect(() => {
@@ -27,7 +28,7 @@ const Chatbox = () => {
 
       {/* chat messages */}
       <div className='flex-1 mb-5 overflow-y-scroll' ref={containerRef}>
-        {messages?.length == 0 &&
+        {!(messages?.length) &&
           (
             <div className='h-full flex flex-col items-center justify-center gap-2 text-primary'>
           <img src={theme === 'dark' ? assets.logo_full : assets.logo_full_dark} className='w-full max-w-56 sm:max-w-68' />
