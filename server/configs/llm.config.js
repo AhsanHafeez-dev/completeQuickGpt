@@ -1,5 +1,5 @@
 import Openai from "openai";
-console.log(process.env.GEMINI_API_KEY);
+
 
 const openai = new Openai({
   apiKey: process.env.GEMINI_API_KEY,
