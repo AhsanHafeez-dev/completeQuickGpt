@@ -69,7 +69,7 @@ const Sidebar = ({isMenuOpen,setIsMenuOpen}) => {
             <div onClick={() => { navigate("/"); setSelectedChat(chat); setIsMenuOpen(false)}} key={chat._id || chat.id} className='p-2 px-4  dark:bg-[#57317C]/10 border  border-gray-300 dark:border-[#80609F]/15 rounded-md cursor-pointer  flex justify-between group '>
               <div>
                 <p className='truncate w-full'>
-                  {chat.messages.length>0?chat.messages[0].content.slice(0,32):chat.name}
+                  {chat.messages.length>0?chat.messages[0].content.slice(0,10):chat.name}
                 </p>
                 <p className='text-xs text-gray-500 dark:text-[#B1A6C0] '>
                   {moment(chat.updatedAt).fromNow()}</p>
