@@ -6,6 +6,11 @@ const AppContext = createContext()
 import axios from 'axios';
 import toast from "react-hot-toast";
 axios.defaults.baseURL = import.meta.env.VITE_SERVER_URL;
+
+const wait = (time) => new Promise((resolve) => setTimeout(() => {
+    console.log("wait complete");
+    resolve()
+}, time));
 export const AppContextProvider = ({ children }) => {
     console.log(import.meta.env.VITE_SERVER_URL);
     
@@ -51,25 +56,34 @@ export const AppContextProvider = ({ children }) => {
         }
         
     }
+
     useEffect(() => {
         if (token) { fetchUser(); }
         else { setUser(null); setLoadingUser(false); }
         
      }, []);
     
+    
     const fetchUserChats = async () => {
             try {
-                const response = await axios.get('/api/chat/get', { headers: { Authorization: token } });
-                if (response.success) {
-                    setChats(response.data);
+                const { data } = await axios.get('/api/chat/get', { headers: { Authorization: token } });
+                console.log("fetched chats",data);
+                
+                if (data.success) {
+                    setChats(data.data);
                     
                     // if user has no chats add new one
-                    if (data?.length === 0) {
+                    console.log(data.data);
+                    // await wait(10000);
+                    
+                    if (data.data?.length === 0) {
                         await createNewChat();
                         await fetchUserChats();
                         
                     } else {
-                        setSelectedChat(response.data[0]);
+                        setSelectedChat(data.data[0]);
+                        console.log("got more than 1 chats");
+                        
                     }
 
                 }

@@ -1,14 +1,32 @@
 import React, { useEffect, useState } from 'react'
 import { dummyPublishedImages } from '../assets/assets';
 import Loading from './Loading';
+import useAppContext from "../context/AppContext"
+import toast from 'react-hot-toast';
 
 const Community = () => {
   const [images, setImages] = useState([]);
   const [loading, setLoading] = useState(true);
+  const { navigate, user, setUser, fetchUser, chats, setChats, selectedChat, setSelectedChat, theme,setTheme,createNewChat,loadingUser,token,setToken,axios,fetchUserChats } = useAppContext();
 
   const fetchImages = async () => {
     setImages(dummyPublishedImages);
-    setLoading(false);
+    try {
+
+    
+      const { data } = await axios.get('/api/user/published-images', { headers: { Authorization: token } })
+      if (data.success) {
+        console.log("community",data.data);
+        
+        setImages(prev => [...data.data, ...prev]);
+      } else {
+        toast.error(data.message ||"erro on servr");
+      }
+      setLoading(false);
+    } catch (error) {
+      toast.error(error.message || "something went wrong")
+    }
+    
   }
 
   useEffect(() => { fetchImages() }, []);

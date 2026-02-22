@@ -7,14 +7,15 @@ const Login = () => {
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-    const { axios, setToken,fetchUser } = useAppContext();
+    const { axios, setToken, fetchUser,user ,navigate} = useAppContext();
+    if (user) { navigate("/"); }
 
     
   const handleSubmit = async (e) => {
       e.preventDefault();
       const url = state === "login" ? 'api/user/login' : 'api/user/register';
       try {
-          const {data} = await axios.post(url, { name, email, password });
+          const {data} = await axios.post(url, { userName:name, email, password });
           console.log(data);
           
           if (data.success) {

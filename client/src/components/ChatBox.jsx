@@ -2,8 +2,9 @@ import React, { useEffect, useRef, useState } from 'react'
 import useAppContext from '../context/AppContext'; 
 import { assets } from '../assets/assets';
 import Message from './Message';
+import toast from 'react-hot-toast';
 const Chatbox = () => {
-  const { navigate, user, setUser, fetchUser, setTheme, chats, setChats, selectedChat, setSelectedChat, theme } = useAppContext();
+  const { navigate, user, setUser, fetchUser, chats, setChats, selectedChat, setSelectedChat, theme,setTheme,createNewChat,loadingUser,token,setToken,axios,fetchUserChats } = useAppContext();
   const [messages, setMessages] = useState([]);
   const [loading, setLoading] = useState(false);
   const [prompt, setPrompt] = useState('');
@@ -12,7 +13,37 @@ const Chatbox = () => {
   const containerRef = useRef(null);
 
   const onSubmit = async (e) => {
-    e.preventDefault();
+try {
+  e.preventDefault();
+  if (!user) toast('login to send message')
+  setLoading(true);
+  const promptCopy = prompt;
+  setPrompt("");
+  setMessages(prev => [...prev, { role: "user", content: promptCopy, timeStamp: Date.now(), isImage: false }]);
+  const { data } = await axios.post(`/api/message/${mode}`, { chatId: selectedChat.id, prompt: promptCopy, isPublished }, { headers: { Authorization: token } });
+  if (data.success) {
+    setMessages(prev => [...prev, data.data]);
+
+    if (mode == 'image') {
+      setUser(prev=>({...prev,credits:prev.credits-=2}   )  )
+    }
+    else {
+      setUser(prev=>({...prev,credits:prev.credits-=1}   )  )
+    }
+    
+  }
+  else {
+    toast.error(data.message || "error from server side");
+    setPrompt(promptCopy);
+  }
+} catch (error) {
+  toast.error(error.message || "something went wrong");
+  
+}
+finally {
+  setPrompt('');
+  setLoading(false);
+    }
     
   }
   useEffect

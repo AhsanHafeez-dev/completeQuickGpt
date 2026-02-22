@@ -1,14 +1,43 @@
 import React, { useEffect, useState } from 'react'
 import { dummyPlans } from "../assets/assets.js"
 import Loading from "../pages/Loading.jsx"
+import useAppContext from "../context/AppContext.jsx"
+import toast from 'react-hot-toast'
+import { data } from 'react-router-dom'
 const Credits = () => {
   const [plans, setPlans] = useState([]);
   const [loading, setLoading] = useState(true);
+  const { navigate, user, setUser, fetchUser, chats, setChats, selectedChat, setSelectedChat, theme,setTheme,createNewChat,loadingUser,token,setToken,axios,fetchUserChats } = useAppContext();
 
   const fetchPlans = async () => {
-    setPlans(dummyPlans);
+    
+    
+    try {
+      const { data } = await axios.get('/api/credit/plans',{headers:{Authorization:token}});
+    if (data.success) { setPlans(data.data); }
+    else { toast.error(data.message || "serverside error"); }
+    
+    } catch (error) {
+      toast.error(error.message || "something went wrong");  
+    }
     setLoading(false);
 
+
+  }
+
+  const purchasePlan = async (planId) => {
+    try {
+      const { data}=await axios.post('/api/credit/purchase', { planId }, { headers: { Authorization: token } })
+      if (data.success) {
+        window.location.href = data.data.url;
+      }
+      else {
+        toast.error(data.message || "server side error");
+      }
+    } catch (error) {
+      toast.error(error.message || "something went wrong")
+      
+    }
   }
 
   useEffect(() => { fetchPlans(); }, []);
@@ -35,7 +64,7 @@ const Credits = () => {
                 )}
               </ul>
             </div>
-              <button className='mt-6 bg-purple-600 hover:bg-purple-700 active:bg-purple-800 text-white font-medium py-2 rounded transition-colors cursor-pointer'>Buy Now</button>
+              <button onClick={(e)=>toast.promise(purchasePlan(plan._id),{loading:'Processing...'})} className='mt-6 bg-purple-600 hover:bg-purple-700 active:bg-purple-800 text-white font-medium py-2 rounded transition-colors cursor-pointer'>Buy Now</button>
           </div>
           )
         )}
