@@ -9,7 +9,7 @@ import { stripeWebhook } from "./controllers/webhooks.js";
 const app = express();
 app.post('/api/stripe', express.raw({ type: 'application/json' }), stripeWebhook);
 
-app.use(cors());
+app.use(cors({origin:["https://complete-quick-gpt.vercel.app"],allowedHeaders:['Authorization','Content-Type'],credentials:true}));
 app.use(cookieParser())
 app.use(express.json());
 
