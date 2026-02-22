@@ -29,6 +29,8 @@ const registerUser = asyncHandler(async (req, res) => {
 
 const loginUser = asyncHandler(async (req, res) => {
     const { email, password } = req.body;
+    console.log(email,password);
+    
     if (!(email?.trim() && password?.trim())) { throw new ApiError(httpCodes.badRequest, "email password  is required for user login"); }
     
     const userExists = await prisma.user.findFirst({ where: { email } });
