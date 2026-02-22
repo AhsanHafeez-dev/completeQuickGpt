@@ -7,7 +7,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "nodemon  server.js",
     "postinstall": "prisma generate",
-    "build":"prisma generate"
+    "build": "prisma generate"
   },
   "keywords": [],
   "author": "",
@@ -15,6 +15,7 @@
   "description": "",
   "dependencies": {
     "@prisma/adapter-better-sqlite3": "^7.4.1",
+    "@prisma/adapter-pg": "^7.4.1",
     "@prisma/client": "^7.4.0",
     "axios": "^1.13.5",
     "bcryptjs": "^3.0.3",
@@ -26,6 +27,7 @@
     "imagekit": "^6.0.0",
     "jsonwebtoken": "^9.0.3",
     "openai": "^6.22.0",
+    "pg": "^8.18.0",
     "prisma": "^7.4.0",
     "stripe": "^20.3.1",
     "svix": "^1.85.0"
