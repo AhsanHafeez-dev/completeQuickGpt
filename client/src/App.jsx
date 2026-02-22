@@ -45,7 +45,7 @@ function App() {
           </div>)
           :
           (
-            <div className="bg-gradient-to-b from-[#242124] to-[##000000] flex items-center justify-center h-screen w-screen">
+            <div className="bg-gradient-to-b from-[#242124] to-[#000000] flex items-center justify-center h-screen w-screen">
                 <Login />
           </div>
           )
