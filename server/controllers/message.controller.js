@@ -7,6 +7,7 @@ import { getResponseFromAI } from "../utils/llm.js";
 import { generateImage } from "../utils/imageKit.js";
 import { generateAndUpload } from "../utils/ImageGeneration.js";
 import { APIError } from "openai";
+import { prepareHistory } from "../utils/message.utils.js";
 
 
 const textMessageController = asyncHandler(async (req, res) => {
@@ -15,8 +16,10 @@ const textMessageController = asyncHandler(async (req, res) => {
 
     if (req.user.credits < 1) { throw new ApiError(httpCodes.forbidden, "Insufficient credits"); }
     
+    const messages = await prepareHistory(prompt,chatId)
     await prisma.message.create({ data: { isImage: false, content: prompt, timeStamp: BigInt(Date.now()),role:"user",chatId } }); 
-    const reply = await getResponseFromAI([{ content: prompt, role: "user" }]);
+    
+    const reply = await getResponseFromAI(messages);
     
     res.status(httpCodes.created).json(new ApiResponse(httpCodes.created, reply, "Message from ai"))
     
