@@ -15,10 +15,12 @@ const textMessageController = asyncHandler(async (req, res) => {
 
     if (req.user.credits < 1) { throw new ApiError(httpCodes.forbidden, "Insufficient credits"); }
     
-    await prisma.message.create({ data: { isImage: false, content: prompt, timeStamp: Date.now(),role:"user",chatId } }); 
-    const reply = await getResponseFromAI([{ content:prompt, role: "user" }]);
-    res.status(httpCodes.created).json(new ApiResponse(httpCodes.created,reply,"Message from ai"))
-    await prisma.message.create({ data: { content: reply.content, role: reply.role, timeStamp: Date.now(), isImage: false, chatId: chatId } });
+    await prisma.message.create({ data: { isImage: false, content: prompt, timeStamp: BigInt(Date.now()),role:"user",chatId } }); 
+    const reply = await getResponseFromAI([{ content: prompt, role: "user" }]);
+    
+    res.status(httpCodes.created).json(new ApiResponse(httpCodes.created, reply, "Message from ai"))
+    
+    await prisma.message.create({ data: { content: reply.content, role: reply.role, timeStamp: BigInt(Date.now()), isImage: false, chatId: chatId } });
     await prisma.user.update({ where: { id: req.user.id }, data: { credits: { decrement: 1 } } });
     return;
     
@@ -27,7 +29,8 @@ const textMessageController = asyncHandler(async (req, res) => {
 
 const imageMessageController = asyncHandler(async (req, res) => {
     const { chatId, prompt, isPublished } = req.body;
-    
+    console.log(chatId);
+        
     if (!(chatId.trim() && prompt.trim())) { throw new ApiError(httpCodes.badRequest, "required arguments cannot be null (chatId,prompt"); }
     if (req.user.credits < 2) { throw new ApiError(httpCodes.forbidden, "Insufficient credit"); }
 
@@ -42,7 +45,7 @@ const imageMessageController = asyncHandler(async (req, res) => {
     
     await prisma.message.create({ data: { isImage: true, isPublished, content: imageUrl, timeStamp: Date.now(), role: "assistant", chatId } }); 
     await prisma.user.update({ where: { id: req.user.id }, data: { credits: { decrement:2 } } });
-
+    
     return res.status(httpCodes.created).json(new ApiResponse(httpCodes.created, { imageUrl }, "image generated successfully"));
     
 })  

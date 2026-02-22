@@ -13,7 +13,10 @@ const purchasePlan = asyncHandler(async (req, res) => {
     const { planId } = req.body;
     const userId = req.user.id;
     const { origin } = req.headers;
-    const plan = plans.filter((plan) => plan._id = planId)[0];
+    
+    const plan = plans.filter((plan) => plan._id == planId)[0];
+    console.log(planId);
+    
     if (!plan) { throw new ApiError(httpCodes.badRequest, "invalid plam"); }
     
 

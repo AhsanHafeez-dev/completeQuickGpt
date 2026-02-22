@@ -10,7 +10,11 @@ const createChat = asyncHandler(async (req, res) => {
 })
 
 const getChats = asyncHandler(async (req, res) => {
-    const chats = await prisma.chat.findMany({ where: { userId: req.user.id }, orderBy: { updatedAt: 'desc' }, include: { messages: true, user: { omit: { password: true, refreshToken: true } } } });
+    let chats = await prisma.chat.findMany({ where: { userId: req.user.id }, orderBy: { updatedAt: 'desc' }, include: { messages: true, user: { omit: { password: true, refreshToken: true } } } });
+    chats = chats.map(
+        (chat) => { chat.messages = chat.messages.map(msg => ({ ...msg, timeStamp: Number(msg.timeStamp) }));return chat  }
+    )
+    
     return res.status(httpCodes.ok).json(new ApiResponse(httpCodes.ok, chats, "chats fetched successfully"));
 
 })
@@ -20,6 +24,8 @@ const getChats = asyncHandler(async (req, res) => {
 
 const deleteChat = asyncHandler(async (req, res) => {
     try {
+        console.log("deleting chat");
+        
         const { chatId } = req.body;
         await prisma.chat.delete({ where: { id: chatId ,userId:req.user.id} });
         return res.status(httpCodes.ok).json(new ApiResponse(httpCodes.ok, {}, "deleted successfully"));

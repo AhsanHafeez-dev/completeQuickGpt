@@ -17,14 +17,16 @@ const openai = new OpenAI({
 
 async function generateAndUpload(prompt) {
   try {
+    console.log(prompt);
+    
     // 2. Generate the image in Base64
     const response = await openai.images.generate({
       model: "imagen-4.0-fast-generate-001",
       prompt,
       response_format: "b64_json",
     });
-
-    const base64Image = response.data[0].b64_json;
+    
+    const base64Image = response?.data[0].b64_json;
     console.log("got image atleats");
     
       const url = await upload(`data:image/png;base64,${base64Image}`);
@@ -33,7 +35,8 @@ async function generateAndUpload(prompt) {
 
     return url;
   } catch (error) {
-    console.error("Upload failed:");
+    console.error("Upload failed:", error);
+    throw new ApiError("cannot generate this image due to privacy policy")
   }
 }
 
@@ -42,7 +45,7 @@ const upload = async (base64Url) => {
 
     try { const response = await cloudinary.uploader.upload(base64Url, { folder: "qucikGpt", resource_type: "auto" }); return response.secure_url; }
     catch (err) {
-        console.log(err.toString());
+        console.log("cloudinary error",err.toString());
         throw new ApiError(httpCodes.serverSideError, "somkhjdsd");
     }
   
