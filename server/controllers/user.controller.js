@@ -34,6 +34,8 @@ const loginUser = asyncHandler(async (req, res) => {
     if (!(email?.trim() && password?.trim())) { throw new ApiError(httpCodes.badRequest, "email password  is required for user login"); }
     
     const userExists = await prisma.user.findFirst({ where: { email } });
+    console.log(userExists);
+    
     if (!userExists) { throw new ApiError(httpCodes.badRequest, "Invalid user credentials"); }
     const isPasswordCorrect = await comparePassword(userExists.password, password);
     if (!isPasswordCorrect) { throw new ApiError(httpCodes.badRequest, "Invalid user credentials"); }
