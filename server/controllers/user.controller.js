@@ -47,6 +47,10 @@ const loginUser = asyncHandler(async (req, res) => {
 
 
 const getUser = asyncHandler(async (req, res) => {
+    
+    console.log("got i current middleware");
+    
+    
     req.user.name = req.user.userName;
     return res.status(httpCodes.ok).json(new ApiResponse(httpCodes.ok, req.user, "user fetched successfully"));
 })
