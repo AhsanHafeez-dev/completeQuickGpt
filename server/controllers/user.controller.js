@@ -55,6 +55,7 @@ const getUser = asyncHandler(async (req, res) => {
     return res.status(httpCodes.ok).json(new ApiResponse(httpCodes.ok, req.user, "user fetched successfully"));
 })
 
+
 const getPublishedImages = asyncHandler(async (req, res) => {
     let images = await prisma.message.findMany({ where: { isPublished: true }, include: { chat: { include: { user: true } } } });
 
