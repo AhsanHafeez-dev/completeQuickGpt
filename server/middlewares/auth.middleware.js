@@ -10,6 +10,7 @@ export const protect = async (req, res, next) => {
     const decodedToken = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
     
     if (!decodedToken) { throw new ApiError(httpCodes.unauthorized, "Invalid token"); }
+    
 
     const user = await prisma.user.findUnique({ where: { id: decodedToken.id } });
     if (!user) { throw new ApiError(httpCodes.notFound, "user not found"); }
