@@ -48,7 +48,7 @@ const loginUser = asyncHandler(async (req, res) => {
 
 const getUser = asyncHandler(async (req, res) => {
     
-    
+    console.log("got i current middleware");
     
     
     req.user.name = req.user.userName;
