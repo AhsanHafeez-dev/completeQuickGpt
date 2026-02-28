@@ -11,7 +11,6 @@ export const protect = async (req, res, next) => {
     
     if (!decodedToken) { throw new ApiError(httpCodes.unauthorized, "Invalid token"); }
     
-
     const user = await prisma.user.findUnique({ where: { id: decodedToken.id } });
     if (!user) { throw new ApiError(httpCodes.notFound, "user not found"); }
     // user.password = user.refreshToken = undefined;
