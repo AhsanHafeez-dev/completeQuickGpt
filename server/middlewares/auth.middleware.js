@@ -2,6 +2,7 @@ import jwt from "jsonwebtoken";
 import { ApiError } from "../utils/ApiError.js";
 import { httpCodes } from "../constants.js";
 import { prisma } from "../prisma/index.js";
+
 export const protect = async (req, res, next) => {
     const token = req.headers.authorization;
 
