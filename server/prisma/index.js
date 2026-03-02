@@ -9,6 +9,7 @@ const connectionString = `${process.env.DATABASE_URL}`;
 
 // adapter initialization
 const adapter = new PrismaPg({ connectionString });
+// initializing prisma
 const prisma = new PrismaClient({ adapter });
 
 
