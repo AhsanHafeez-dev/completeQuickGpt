@@ -16,3 +16,5 @@ const prisma = new PrismaClient({ adapter });
 
 // exporting 
 export { prisma };
+
+// in this project we are currently using neon db
