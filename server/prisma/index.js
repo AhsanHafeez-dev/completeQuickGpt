@@ -19,3 +19,4 @@ export { prisma };
 
 // in this project we are currently using neon db
 // we are also using latest prisma edition
+// you can use prisma 6 if you want 
