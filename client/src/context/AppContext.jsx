@@ -2,15 +2,17 @@ import { useNavigate } from "react-router-dom";
 
 import  { createContext, useContext, useState, useEffect } from "react";
 import {dummyChats, dummyUserData} from "./../assets/assets.js"
-const AppContext = createContext()
 import axios from 'axios';
 import toast from "react-hot-toast";
 axios.defaults.baseURL = import.meta.env.VITE_SERVER_URL;
 
-const wait = (time) => new Promise((resolve) => setTimeout(() => {
-    console.log("wait complete");
-    resolve()
-}, time));
+
+
+
+const AppContext = createContext()
+
+
+
 export const AppContextProvider = ({ children }) => {
     console.log(import.meta.env.VITE_SERVER_URL);
     
