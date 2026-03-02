@@ -18,6 +18,8 @@ const prisma = new PrismaClient({ adapter });
 export { prisma };
 
 // in this project we are currently using neon db
+    
+//  you can use supabase if you want just change the url in environment
 // we are also using latest prisma edition
 // you can use prisma 6 if you want 
 // mostly things are same its just prisma.confifg.ts
